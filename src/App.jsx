@@ -3,14 +3,19 @@ import Layout from './Layout';
 import Home from './home/containers/Home';
 import { lazy, Suspense } from 'react';
 import AuthGuard from './auth/guards/AuthGuard';
+import { useAuthContext } from './auth/context/AuthContext';
 
 const Signup = lazy(() => import('./auth/containers/Signup'));
 const Signin = lazy(() => import('./auth/containers/Signin'));
 const ForgotPassword = lazy(() => import('./auth/containers/ForgotPassword'));
 const AuthActions = lazy(() => import('./auth/containers/AuthActions'));
 const Account = lazy(() => import('./account/containers/Account'));
+const Dashboard = lazy(() => import('./dashboard/containers/Dashboard'));
 
 function App() {
+
+  const { currentUser } = useAuthContext();
+
   return (
     <BrowserRouter>
       <Routes>
@@ -44,6 +49,13 @@ function App() {
             <AuthGuard mustBeAuthenticated={true}>
               <Suspense fallback={<>...</>}>
                 <Account />
+              </Suspense>
+            </AuthGuard>
+          } />
+          <Route path="/dashboard" element={
+            <AuthGuard mustBeAuthenticated={true}>
+              <Suspense fallback={<>...</>}>
+                <Dashboard />
               </Suspense>
             </AuthGuard>
           } />

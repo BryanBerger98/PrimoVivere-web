@@ -4,7 +4,7 @@ import { useAuthContext } from "../context/AuthContext";
 function AuthGuard({children, mustBeAuthenticated}) {
 
     const authContext = useAuthContext();
-    const auth = mustBeAuthenticated ? authContext.currentUser : mustBeAuthenticated;
+    const auth = mustBeAuthenticated ? authContext.currentUser : true;
     const location = useLocation();
 
     if (auth) {
