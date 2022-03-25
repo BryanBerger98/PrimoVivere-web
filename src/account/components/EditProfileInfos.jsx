@@ -44,23 +44,10 @@ function EditProfileInfos() {
     }, []);
 
     useEffect(() => {
-        let newUserData = {...currentUserData};
-        if (currentUser && currentUserData) {
-            if (currentUserData.birthDate && currentUserData.birthDate.seconds) {
-                const date = new Date(currentUserData.birthDate.seconds * 1000);
-                const birthDate = {
-                    fullDate: date,
-                    date: date.getDate() < 10 ? '0' + date.getDate() : date.getDate(),
-                    month: (date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1,
-                    year: date.getFullYear()
-                }
-                newUserData = {...newUserData, birthDate};
-            }
-            setUserData(newUserData);
-        }
+        setUserData({...currentUserData});
         setProfileInfosFormValues({
             username: currentUser && currentUser.displayName ? currentUser.displayName : '',
-            birthDate: newUserData && newUserData.birthDate && newUserData.birthDate.fullDate ? `${newUserData.birthDate.month}/${newUserData.birthDate.date}/${newUserData.birthDate.year}` : ''
+            birthDate: currentUserData && currentUserData.birthDate && currentUserData.birthDate.fullDate ? `${currentUserData.birthDate.month}/${currentUserData.birthDate.date}/${currentUserData.birthDate.year}` : ''
         });
     }, [currentUser, currentUserData]);
 

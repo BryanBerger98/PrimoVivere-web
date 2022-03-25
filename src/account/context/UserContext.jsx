@@ -47,8 +47,19 @@ const UserContextProvider = props => {
         try {
             const response = await getDoc(doc(db, 'users', userId));
             if (response.exists()) {
-                setCurrentUserData(response.data());
-                return response.data();
+                let userData = response.data();
+                if (userData.birthDate && userData.birthDate.seconds) {
+                    const date = new Date(userData.birthDate.seconds * 1000);
+                    const birthDate = {
+                        fullDate: date,
+                        date: date.getDate() < 10 ? '0' + date.getDate() : date.getDate(),
+                        month: (date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1,
+                        year: date.getFullYear()
+                    }
+                    userData = {...userData, birthDate};
+                }
+                setCurrentUserData(userData);
+                return userData;
             } else {
                 return null;
             }
